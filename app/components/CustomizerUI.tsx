@@ -94,7 +94,11 @@ export default function CustomizerUI({
   const setLogoUrl = activeSide === 'front' ? setFrontLogoUrl : setBackLogoUrl;
   const logoSize = activeSide === 'front' ? frontLogoSize : backLogoSize;
   const setLogoSize = activeSide === 'front' ? setFrontLogoSize : setBackLogoSize;
+  
+  // These are temporarily unused while the feature is commented out
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isFullCover = activeSide === 'front' ? frontIsFullCover : backIsFullCover;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const setIsFullCover = activeSide === 'front' ? setFrontIsFullCover : setBackIsFullCover;
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -226,6 +230,7 @@ export default function CustomizerUI({
               <div className="pt-2">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-lg overflow-hidden border border-white/20 bg-black/40 flex items-center justify-center p-1">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={logoUrl} alt="Logo" className="max-w-full max-h-full object-contain" />
                     </div>
                     <span className="text-white/40 text-[10px] uppercase font-bold tracking-widest">Logo Settings</span>

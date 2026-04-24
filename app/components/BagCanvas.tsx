@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, ThreeEvent } from "@react-three/fiber";
 import {
   OrbitControls,
   PerspectiveCamera,
@@ -10,27 +10,31 @@ import { Suspense, useRef, useState, useEffect } from "react";
 import { BagModel } from "./BagModel";
 import * as THREE from "three";
 import type { TextField } from "../page";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 function CameraController({ activeSide, isDragging }: { 
   activeSide: 'front' | 'back', 
   isDragging: boolean 
 }) {
-  const orbitRef = useRef<any>(null);
-  const [targetZ, setTargetZ] = useState<number | null>(null);
+  const orbitRef = useRef<OrbitControlsImpl>(null);
+  const targetZRef = useRef<number | null>(null);
 
+  // Set the target Z in a ref instead of state to avoid cascading render warnings
   useEffect(() => {
-    setTargetZ(activeSide === 'front' ? 20 : -20);
+    targetZRef.current = activeSide === 'front' ? 20 : -20;
   }, [activeSide]);
 
   useFrame((state) => {
-    if (!orbitRef.current || isDragging || targetZ === null) return;
+    if (!orbitRef.current || isDragging || targetZRef.current === null) return;
 
     const currentZ = state.camera.position.z;
+    const targetZ = targetZRef.current;
+
     if (Math.abs(currentZ - targetZ) > 0.1) {
       state.camera.position.lerp(new THREE.Vector3(0, 0, targetZ), 0.1);
       orbitRef.current.update();
     } else {
-      setTargetZ(null);
+      targetZRef.current = null;
     }
   });
 
@@ -49,7 +53,6 @@ function CameraController({ activeSide, isDragging }: {
 export default function BagCanvas({
   customSettings,
   activeSide,
-  setActiveSide,
   frontFields,
   backFields,
   selectedFieldId,

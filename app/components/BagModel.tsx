@@ -1,6 +1,6 @@
 'use client'
 import { useGLTF, Text, Line, Image as ImageDrei } from "@react-three/drei"
-import { useThree } from "@react-three/fiber"
+import { useThree, ThreeEvent } from "@react-three/fiber"
 import { useRef, useEffect, useCallback, Suspense } from "react"
 import * as THREE from "three"
 import type { TextField } from "../page"
@@ -183,7 +183,7 @@ export function BagModel({
     }
   }, [gl, getPlaneIntersection, onUpdateField, onUpdateFrontLogo, onUpdateBackLogo, onDragEnd, activeSide])
 
-  const handleTextPointerDown = (e: any, field: TextField) => {
+  const handleTextPointerDown = (e: ThreeEvent<PointerEvent>, field: TextField) => {
     e.stopPropagation()
     onSelectField(field.id)
 
@@ -195,7 +195,7 @@ export function BagModel({
     onDragStart()
   }
 
-  const handleLogoPointerDown = (e: any, side: 'front' | 'back') => {
+  const handleLogoPointerDown = (e: ThreeEvent<PointerEvent>, side: 'front' | 'back') => {
     const isFull = side === 'front' ? frontIsFullCover : backIsFullCover;
     if (isFull) return; // Disable dragging in full cover mode
 
@@ -248,7 +248,7 @@ export function BagModel({
                   material-toneMapped={false}
                   material-polygonOffset={true}
                   material-polygonOffsetFactor={-2}
-                  onPointerDown={(e: any) => handleTextPointerDown(e, field)}
+                  onPointerDown={(e) => handleTextPointerDown(e, field)}
                   onPointerOver={() => { document.body.style.cursor = 'grab' }}
                   onPointerOut={() => { document.body.style.cursor = 'auto' }}
                 >
@@ -296,7 +296,7 @@ export function BagModel({
                   material-toneMapped={false}
                   material-polygonOffset={true}
                   material-polygonOffsetFactor={-2}
-                  onPointerDown={(e: any) => handleTextPointerDown(e, field)}
+                  onPointerDown={(e) => handleTextPointerDown(e, field)}
                   onPointerOver={() => { document.body.style.cursor = 'grab' }}
                   onPointerOut={() => { document.body.style.cursor = 'auto' }}
                 >
